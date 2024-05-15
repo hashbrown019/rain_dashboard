@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<!-- saved from url=(0064) -->
+<html>
+	{% include 'head.html' %}
+	<script async type="text/javascript" src="../../static/js/amcharts/index.js"></script>
+	<script async type="text/javascript" src="../../static/js/amcharts/xy.js"></script>
+	<script async type="text/javascript" src="../../static/js/amcharts/Animated.js"></script>
+	<script async type="text/javascript" src="../../static/js/amcharts/percent.js"></script>
+	<script async type="text/javascript" src="../../static/js/amcharts/hierarchy.js"></script>
+	<body class="x-light-grey" style="
+		/*background-image: url('../../static/img/tile.webp');
+		background-repeat: repeat-y repeat-x;*/
+	">
+
+		
+		<!-- Sidebar/menu -->
+		<div class="x-container x-padding" style="">
+			<br><br><br>
+			<!-- <div class="x-sidebar x-collapse x-teal x-animate-left" style="height:70vh;z-index:3;width:300px;border-radius: 50px 50px 50px 50px;" id="mySidebar"> -->
+			<div class="x-sidebar x-collapse x-teal x-animate-left" style="height:70vh;z-index:3;width:300px;" id="mySidebar">
+				<div class="x-container x-padding x-left x-rapid-macha-dark x-hide"  onclick="x_open()" style="width:300px;">
+					<div class="x-col l5">
+						<img src="../static/img/splash.png" class="x-img" style="width:100%">
+					</div>
+					<div class="x-col l7 x-container">
+						<p style="line-height: 1px;">
+							<span class="x-text-shrink "><strong>RescueMeNow</strong></span><br>
+							<span class="x-text-shrink x-tiny">Admin Panel</span>
+						</p>
+					</div>
+				</div>
+				<div class="x-container">
+					<h5><span class="fa fa-cog"></span> Options</h5>
+				</div>
+				<div class="x-bar-block x-padding">
+					<a href="#" class="x-bar-item x-button x-padding-16 x-hide-large x-dark-grey x-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>&nbsp; Close Menu</a>
+					<!-- <a href="#" class="x-bar-item x-button x-padding x-hover-blue x-green" onclick="show_modal_entry()"><i class="fa fa-hashtag fa-fw"></i>&nbsp;Add Entry</a> -->
+					<!-- <a href="#" class="x-bar-item x-button x-padding x-hover-blue"><i class="fa fa-users fa-fw"></i>&nbsp; Overview</a>
+					<a href="#" class="x-bar-item x-button x-padding x-hover-blue"><i class="fa fa-eye fa-fw"></i>&nbsp; Reports</a> -->
+				</div>
+
+				<div class="x-row x-center" style="display: fixed;bottom: 100px;">
+					<div class="x-container x-row x-padding">
+						<!-- <button class="x-block x-btn x-border x-round x-border-orange" onclick="change_pass()"> <span class="x-text-orange x-hover-orange fa fa-key"></span> Refresh</button> -->
+						<button id="button_audio" class="x-left-align x-block x-btn" onclick="_playAudio()">
+							<span class="fa fa-refresh"></span> Refresh
+						</button>
+					</div>
+					<div class="x-container x-row x-padding">
+						<button class="x-left-align x-block x-btn" onclick="goto('/clear')"> <span class="x-text-orange x-hover-orange fa fa-warning"></span> Clear Logs</button>
+					</div>
+					<hr>
+					<div class="x-container x-row x-padding">
+						<button class="x-left-align x-block x-btn" onclick="change_pass()"> <span class="x-text-orange x-hover-orange fa fa-key x-hide"></span> Change Password</button>
+					</div>
+					<div class="x-container x-row x-padding x-display-bottom">
+						<button class="x-left-align x-block x-btn x-round x-red" onclick="goto('/')"> <span class="x-text fa fa-power-off"></span> Logout</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- Overlay effect when opening sidebar on small screens -->
+		<div class="x-overlay x-hide-large x-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+		<!-- !PAGE CONTENT! -->
+		<div class="x-main x-container x-padding" style="margin-left:300px;margin-top:0px;">
+
+			<div class="x-container x-row">
+				<div class="x-col l8 x-margin-bottom">
+					<b class="x-xlarge"><i class="fa fa-dashboard"></i> List Of Devices</b>
+					{% include 'parts/table_main_entries.html'%}
+				</div>
+				<div class="x-col l4 x-margin-bottom" id="__map">
+					<b class="x-xlarge"><i class="fa fa-eye"></i> Other Previews</b>
+
+					<div class="x-bar x-black">
+						<button class="x-bar-item x-button" onclick="open_tab('TAB_MAP')">Map</button>
+						<button class="x-bar-item x-button" onclick="open_tab('TAB_LOGS')">Logs</button>
+						<button class="x-bar-item x-button" onclick="open_tab('TAB_DISPATCH')">Forcasting</button>
+					</div>
+
+					<div id="TAB_MAP" class="x-container TABS">
+						<h2>Map Preview</h2>
+
+						{% include 'parts/map.html'%}
+					</div>
+
+					<div id="TAB_LOGS" class="x-container TABS" style="display:none">
+						<h2>Logs</h2>
+						<div class="x-container x-tiny" id="LOGS" style="overflow-y: scroll;height: 70vh;">
+							
+						</div>
+					</div>
+					<div id="TAB_DISPATCH" class="x-container TABS" style="display:none">
+						<h2>Forcasting</h2>
+						<div class="x-container" id="DISPATCH" style="overflow-y: scroll;height: 70vh;">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="x-container x-row">
+				{% include 'modals/add_entry_main.html' %}
+			</div>
+			<!-- End page content -->
+		</div>
+
+		<script>
+
+			function respond_status(elem,stat){
+				if(stat=="F"){
+					elem.parentNode.innerHTML = "<b class='x-text-red'>False Alarm: Rescue was aborted</b>";
+					write_log(`<span class="x-text-red">Rescue was aborted in [${user['latlong']}]</span>`)
+				}
+				else{
+					elem.parentNode.innerHTML = "<b class='x-text-green'>Done Rescue</b>";
+					write_log(`<span class="x-text-green">Rescue Done[${user['latlong']}]</span>`)
+				}
+			}
+
+			function open_tab(cityName) {
+				var i;
+				var x = document.getElementsByClassName("TABS");
+				for (i = 0; i < x.length; i++) {
+					x[i].style.display = "none";  
+				}
+				document.getElementById(cityName).style.display = "block";  
+			}
+
+			function set_resp(latlong,namae){
+				println("sending")
+				open_tab('TAB_DISPATCH')
+				$ID("DISPATCH").innerHTML = (`
+					<div class="x-container">
+						<div class="x-container x-border">
+							<span class="x-text-orange">Forcasting</span><br>
+							Water Level Forcast For [${namae}] <span class="x-text-blue" onclick="set_danger_area('${latlong}')">[${latlong}]</span><br>
+							<div class="x-hide">
+								Status:<br>
+								<button class="x-btn x-text-green x-border " onclick="respond_status(this,'R')">
+									Rescued
+								</button>
+								<button class="x-btn x-text-green x-border " onclick="respond_status(this,'F')">
+									False Alarm
+								</button>
+							</div>
+						</div>
+					</div>
+				`)
+
+			}
+
+			// Get the Sidebar
+			var mySidebar = document.getElementById("mySidebar");
+
+			// Get the DIV with overlay effect
+			var overlayBg = document.getElementById("myOverlay");
+
+			// Toggle between showing and hiding the sidebar, and add overlay effect
+			function w3_open() {
+				if (mySidebar.style.display === 'block') {
+					mySidebar.style.display = 'none';
+					overlayBg.style.display = "none";
+				} else {
+					mySidebar.style.display = 'block';
+					overlayBg.style.display = "block";
+				}
+			}
+
+			// Close the sidebar with the close button
+			function w3_close() {
+				mySidebar.style.display = "none";
+				overlayBg.style.display = "none";
+			}
+
+			function change_pass(){
+				var ch_password_dialog = $dialog({
+					title : "Change Password",
+					subtitle : "Enter new value for password",
+					content : (`
+						<input id="password" type="password" class="x-input x-border" placeholder="new Password">
+					`),
+					buttons : ["Login"],
+					buttons_actions : [function(){
+						goto('/ch_pass/'+$ID("password").value)
+					}]
+				})
+				ch_password_dialog.dialog.style.width = "40vw"
+				ch_password_dialog.show()
+			}
+		</script>
+	</body>
+</html>

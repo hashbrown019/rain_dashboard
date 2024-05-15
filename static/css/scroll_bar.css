@@ -1,0 +1,23 @@
+::-webkit-scrollbar {
+	/*background-color: orange;*/
+	width: 3px;
+}
+
+::-webkit-scrollbar-track {
+	background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: grey;
+	border-radius: 10px;
+	/*border: 6px solid;*/
+	background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background-color: teal;
+}
+
+/*::-webkit-scrollbar {
+    display: none;
+}*/

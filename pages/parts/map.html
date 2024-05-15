@@ -1,0 +1,29 @@
+<style type="text/css">
+	#map { height:55vh; }
+</style>
+<div>
+	<div id="map" class="x-round-xxlarge"></div>
+</div>
+
+
+
+<script type="text/javascript">
+	var map = L.map('map').setView([51.505, -0.09], 13);
+	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		maxZoom: 19,
+		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+	}).addTo(map);
+
+
+	function set_danger_area(latlong) {
+		open_tab('TAB_MAP')
+		latlong = latlong.split(",")
+		var circle = L.circle(latlong, {
+			color: 'red',
+			fillColor: '#f03',
+			fillOpacity: 0.5,
+			radius: 5
+		}).addTo(map);
+		map.setView(latlong, 21)
+	}
+</script>

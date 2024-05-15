@@ -1,0 +1,118 @@
+
+<div id="card_holder" >
+	<div class="x-center">
+		<b class="x-text-orange x-xxlarge">
+			<i class="	fa fa-circle-o-notch fa-spin"></i>
+			Scanning devices. Please Wait
+		</b>
+	</div>
+</div>
+<audio id="myAudio">
+	<source src="../static/sounds/alert.mp3" type="audio/mpeg">
+</audio>
+
+<script type="text/javascript">
+	var x = document.getElementById("myAudio"); 
+
+	function playAudio(){x.play();} 
+	function _playAudio(){x.play();x.pause();get_all()} 
+
+	function pauseAudio(){x.pause();} 
+
+
+	function get_all(){
+		window.setInterval(function(){
+			$send({
+				action : "/rain/get_all_status",
+				method : POST,
+				func : function(r){
+					var res = JSON.parse(r)
+					var _card_holder = ""
+					// for (var i = 0; i < res.length; i++) {
+					var res_len = Object.keys(res).length
+					println(res_len)
+					for(key in res){
+						user = res[key]
+						var _status = ["blue","__x-hide"]
+						if(user['status'].split("::")[0]=="danger"){
+							_status = ["red","__x-show"]
+							// playAudio()
+							// $ID("button_audio").click()
+							write_log(`emeregency found in [${user['latlong']}]`)
+						}
+						else{
+							pauseAudio()
+						}
+
+						_card_holder += (`
+							<div class="x-row x-container" style="margin-bottom:5px;">
+								<div class="x-container">
+									<div class="x-container x-padding x-pale-${_status[0]} x-border x-border-${_status[0]} x-leftbar" style="">
+										<div class="x-col l3">
+											<b>${user['name']}</b><br>
+											<span class="x-tiny">Emergency Contact Number</span><br><b class="x-small">${user['emer_num']}</b>
+											<span class="x-small">${user['device']}</span>
+										</div>
+										<div class="x-col l4">
+											<span>Coordinates</span> :[<b>${user['latlong']}</b>]<br>
+											<span class="x-small">
+												<span>Contact Number</span> : <b class="x-small">${user['num']}</b><br>
+											</span>
+										</div>
+										<div class="x-col l3 x-small x-hide">
+											<text style="line-height: 3px;">
+												<span>status</span> :<b>${user['status'].replaceAll("_","<br>").replaceAll("::","<br>")}</b>
+											</text>
+										</div>
+										<div class="x-col l2 x-small x-padding ${_status[1]}">
+											<button class="x-btn x-black" onclick="set_danger_area('${user['latlong']}')">
+												View on Map <span class="fa fa-map-o"></span>
+											</button>
+											<button class="x-btn x-border" onclick="set_resp('${user['latlong']}','${user['name']}')">
+												Generate Forcast
+												<span class="x-text-orange fa fa-warning"></span>
+											</button>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						`)
+					}
+					
+					if(res_len==0){
+						_card_holder =(`
+							<div class="x-center">
+								<b class="x-text-red x-xxlarge">
+									<i class="	fa fa-times-rectangle-o"></i>
+									No active Device was found
+								</b>
+							</div>
+						`)
+					}
+					$ID("card_holder").innerHTML = _card_holder
+				}
+			})
+		},3200)
+	}
+	$onload(get_all)
+
+
+
+	var LOGS = $ID("LOGS")
+	function write_log(texts){
+		var _TEXT = `<span class="logs">${texts}</span><br>`
+		var _logs = $CLASS("logs")
+
+		if(_logs.length>=1){
+			var last_log = _logs[_logs.length-1].innerHTML
+			if(texts==last_log){return}
+		}
+
+
+		if(_logs[_logs.length-1] != `${texts}`){
+			$ID("LOGS").innerHTML += _TEXT
+		}
+		// println(_logs[_logs.length].innerHTML) 
+	}
+</script>

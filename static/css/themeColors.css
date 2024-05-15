@@ -1,0 +1,50 @@
+/* green Theme */
+ .bg-theme-green{
+ 	background-color: #197b30;
+ }
+
+ .bg-theme-green-dark{
+ 	background-color: #0d3f19;
+ }
+
+ .bg-theme-green-light{
+ 	background-color: #23a942;
+ }
+
+ .theme-green{
+ 	color: #197b30;
+ }
+
+ .theme-green-dark{
+ 	color: #0d3f19;
+ }
+
+ .theme-green-light{
+ 	color: #23a942;
+ }
+
+ .bg-theme-grey{
+ 	background-color: #262626;
+ }
+
+ .bg-theme-grey-dark{
+ 	background-color: #0d0d0d;
+ }
+
+ .bg-theme-grey-light{
+ 	background-color: #4d4d4d;
+ }
+
+ .theme-grey{
+ 	color: #262626;
+ }
+
+ .theme-grey-dark{
+ 	color: #0d0d0d;
+ }
+
+ .theme-grey-light{
+ 	color: #4d4d4d;
+ }
+
+.themebg1{background-color: #393939;

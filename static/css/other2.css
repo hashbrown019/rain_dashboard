@@ -1,0 +1,21 @@
+.dti-text-color1{
+	color: #19374d;
+}
+.dti-bg-color1{
+	background-color:#19374d;
+	color: white;
+}
+
+@font-face {
+    font-family: 'Bebas-Bebas-Regular';
+    src: 
+    	url('static/fonts/PT_Sans/Bebas-Regular.eot'), 
+    	url('static/fonts/PT_Sans/Bebas-Regular.ttf') format('truetype'),
+    	url('static/fonts/PT_Sans/Bebas-Regular.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+/*body{
+    overflow-x:hidden;
+    font-family: 'Bebas';
+   }*/
